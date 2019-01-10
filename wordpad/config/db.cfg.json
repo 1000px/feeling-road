@@ -1,0 +1,9 @@
+{
+    "localhost": {
+        "host": "localhost",
+        "user": "root",
+        "password": "221438Mlx&",
+        "port": "3306",
+        "database": "bt300-db"
+    }
+}
