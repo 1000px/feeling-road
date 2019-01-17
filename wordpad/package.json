@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --watch --config _build/build.conf.js",
+    "build": "webpack --config _build/build.conf.js",
     "dev": "webpack-dev-server --config _build/dev.conf.js",
     "desk": "electron .",
     "start": "electron ."

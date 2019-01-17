@@ -72,7 +72,6 @@ class Editor {
         let self = this;
         let txt = '';
         let ps = self.frame.children;
-        console.log('word count...', ps);
         for(let i=0, len=ps.length; i<len; i++) {
             let cnt = ps.item(i).innerText.replace(/\s*/g,"");
             if(cnt) {

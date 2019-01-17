@@ -7,10 +7,10 @@ function createWindow() {
     let win = new BrowserWindow({width: 1366, height: 600});
 
     // 然后加载应用的index.html
-    // win.loadURL('http://localhost:8080');
-    // win.loadFile('output/index.html');
-    console.log(100, process.env.NODE_ENV);
     win.loadURL('http://localhost:8080');
+    // console.log(1000, __dirname);
+    // win.loadFile('output/index.html');
+    // win.loadURL(`file://${__dirname}/output/index.html`);
     // if(!process.env.NODE_ENV) {
         
     // } else {
@@ -21,7 +21,7 @@ function createWindow() {
     //     }))
     // }
     // 打开开发者工具
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 }
 
 app.on('ready', createWindow);

@@ -50,11 +50,12 @@
     </div>
     <div class="center">
         <div class="c-top">
+            <div class="percent" :class="saveSuccess ? 'percent100' :''"></div>
             <div class="c-top-left">
                 <span>字数：{{total}}</span>
             </div>
             <div class="c-top-right">
-                <span>时间：2018-12-12</span>
+                <span>时间：{{currentTime}}</span>
             </div>
         </div>
         <div class="c-main">
@@ -85,6 +86,8 @@ export default {
             books: [],
             newVolume: '',
             newSection: '',
+            saveSuccess: false,
+            currentTime: '',
             total: 0,
             current: {
                 book: {
@@ -107,15 +110,22 @@ export default {
     },
     methods: {
         saveCnt: function() {
-            let cnt = this.editor.html2Txt();
-            EditorDao.updateSectionById(this.current.section.id, cnt);
+            let self = this;
+            self.saveSuccess = true;
+            let cnt = self.editor.html2Txt();
+            EditorDao.updateSectionById(self.current.section.id, cnt).then(res => {
+                let saver = setTimeout(() =>{
+                    self.saveSuccess= false;
+                    saver.clearTimerout();
+                }, 1000)
+            });
         },
         // 更新节点名称，节点变为可更新状态（input）
         updateNodeName: function(e) {
             let els = e.target.parentNode.children;
             toggleInput(els, true);
         },
-        // 将改动保存到数据库
+        // 将目录改动内容保存到数据库
         saveNodeName: function(node, e) {
             let els = e.target.parentNode.children;
             if(node.id == this.current.volume.id) {
@@ -183,9 +193,18 @@ export default {
         let self = this;
         let height = document.body.clientHeight - 148;
         self.$refs.editor.parentNode.setAttribute('style', 'height: '+ height + 'px;');
+        // 窗口尺寸发生变化时
+        window.onresize = () => {
+            let height = document.body.clientHeight - 148;
+            self.$refs.editor.parentNode.setAttribute('style', 'height: '+ height + 'px;');
+        }
         self.editor = new Editor(self.$refs.editor, {
             lineHeight: 40,
             lineColor: '#E0E2E4'
+        });
+        // 时间
+        let timer = setInterval(() => {
+            self.currentTime = new Date().toString();
         });
         
         // 初始化左侧边栏
@@ -203,6 +222,18 @@ export default {
         self.$refs.editor.addEventListener('keyup', function(e) {
             // 更新字数
             self.total =  self.editor.wordCount();
+            console.log(e.keyCode);
+            // ctrl + s 保存文章更新内容
+            if(e.ctrlKey && e.keyCode == 83) {
+                let cnt = self.editor.html2Txt();
+                self.saveSuccess= true;
+                EditorDao.updateSectionById(self.current.section.id, cnt).then(res => {
+                    let saver = setTimeout(() =>{
+                        self.saveSuccess= false;
+                        saver.clearTimerout();
+                    }, 1000);
+                });
+            }
         })
     }
 }

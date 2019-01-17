@@ -37,7 +37,7 @@ const Config = merge(WebpackBaseConf, {
                 },
                 compress: {
                     warnings: false, // 在UglifyJS删除没有用到的js代码时，不输出警告
-                    drop_console: true, // 删除所有的console语句
+                    // drop_console: true, // 删除所有的console语句
                     collapse_vars: true, // 内嵌已定义的仅用到一次的变量
                     reduce_vars: true // 提取出现多次但没有定义成变量的静态值
                 }

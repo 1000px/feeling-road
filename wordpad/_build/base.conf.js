@@ -168,8 +168,7 @@ const Config = {
             chunks: ['plain']
         }),
         new CleanWebpackPlugin([path.join(__dirname, '../output/')], {
-            allowExternal: true,
-            exclude: ['dll']
+            allowExternal: true
         }),
         new CopyWebpackPlugin([
             {

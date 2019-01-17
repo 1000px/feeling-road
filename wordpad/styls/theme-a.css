@@ -155,6 +155,20 @@
     background: #FFFFFF;
     height: 60px;
     width: 100%;
+    position: relative;
+}
+.editor > .center > .c-top > .percent {
+    height: 1px;
+    position: absolute;
+    width: 0;
+    bottom: 0;
+    left: 0;
+    background: -webkit-linear-gradient(left, blue, yellow, red);;
+    z-index: 1000;
+}
+.editor > .center > .c-top > .percent100 {
+    width: 100%;
+    transition: width 1s;
 }
 .editor > .center > .c-top .c-top-left {
     float: left;
