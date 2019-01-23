@@ -228,9 +228,9 @@ export default {
                 let cnt = self.editor.html2Txt();
                 self.saveSuccess= true;
                 EditorDao.updateSectionById(self.current.section.id, cnt).then(res => {
-                    let saver = setTimeout(() =>{
+                    let saver = setTimeout(() => {
                         self.saveSuccess= false;
-                        saver.clearTimerout();
+                        clearTimeout(saver);
                     }, 1000);
                 });
             }

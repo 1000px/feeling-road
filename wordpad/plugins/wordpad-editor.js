@@ -44,31 +44,50 @@ class Editor {
         });
         _self.frame.addEventListener('keyup', function(event) {
             let e = event || window.event || arguments.callee.caller.arguments[0];
-            if(e && e.keyCode==13) {
-                // 如果当前p标签为空，则不允许换行
-                let cnt = e.target.innerText.replace(/\s*/g,"");
-                if(!cnt) return;
-                // 添加p标签
-                let p = createPElement(_self, '', true);
-                insertAfter(p, e.target);
-                p.focus();
+            let cnt = e.target.innerText.replace(/\s*/g,''); // 去空格之后的文本内容
+            if(e) {
+                switch(e.keyCode) {
+                    case 13: // 回车键
+                        // 如果当前p标签为空，则不允许换行
+                        if(!cnt) return;
+                        // 添加p标签
+                        let p = createPElement(_self, '', true);
+                        insertAfter(p, e.target);
+                        p.focus();
+                        break;
+                    case 8: // 回退键
+                        // 如果当前p标签为空，回退后删除p标签，光标定位到上一个p标签尾部
+                        if(!cnt) {
+                            // 获取前一个p标签
+                            let preP = e.target.previousSibling;
+                            // 获取父级元素
+                            let parent = e.target.parentNode;
+                            // 删除空标签p
+                            parent.removeChild(e.target);
+                            preP.focus();
+                            let selection = window.getSelection();
+                            selection.collapse(preP, 1);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         });
-    }
+    } 
     html2Txt() {
         let self = this;
         let txt = '';
         let ps = self.frame.children;
         for(let i=0, len=ps.length; i<len; i++) {
             let cnt = ps.item(i).innerText.replace(/\s*/g,"");
-            if(cnt) {
+            // if(cnt) {
                 txt += cnt + '\\r\\n';
-            }
+            // }
         }
         return txt;
     }
     wordCount() {
-        
         let self = this;
         let txt = '';
         let ps = self.frame.children;
@@ -91,10 +110,10 @@ class Editor {
         let ps = text.split('\\r\\n');
         ps.forEach(p => {
             let pCnt = p.replace(/\s*/g,"");
-            if(pCnt) {
+            // if(pCnt) {
                 let pEl = createPElement(self, pCnt, true);
                 self.frame.appendChild(pEl);
-            }
+            // }
         });
     }
 }
